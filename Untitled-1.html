@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 1rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <div class="form-group">
+            <button onclick="login()">Submit</button>
+        </div>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        async function login() {
+            const name = document.getElementById('name').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch(`/login/?name=${encodeURIComponent(name)}&password=${encodeURIComponent(password)}`);
+                const result = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('message').textContent = result.message;
+                    document.getElementById('message').className = 'message success';
+                } else {
+                    document.getElementById('message').textContent = result.detail || 'Login failed';
+                    document.getElementById('message').className = 'message error';
+                }
+            } catch (error) {
+                document.getElementById('message').textContent = 'An error occurred';
+                document.getElementById('message').className = 'message error';
+            }
+        }
+    </script>
+</body>
+</html>
