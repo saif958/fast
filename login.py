@@ -1,12 +1,10 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi_jwt_auth import AuthJWT
-from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, text
 from sqlalchemy.orm import sessionmaker
 from argon2 import PasswordHasher
 from databases import Database
-from fastapi.staticfiles import StaticFiles
 from datetime import timedelta
 import jwt
 # Database setup
@@ -121,7 +119,7 @@ async def login(User: UserLogin, Authorize: AuthJWT = Depends()):
     
     except Exception as e:
         print(f"Password verification failed: {str(e)}")
-        return "password is incorrect"
+        return "email or password is incorrect "
 # Secure routes with JWT
 @app.get("/me")
 async def me(Authorize: AuthJWT = Depends()):
@@ -238,7 +236,7 @@ async def get_todo_list(Authorize: AuthJWT = Depends()):
             else :
                 raise HTTPException (status_code=404,detail="user not found:")
     except:
-        raise HTTPException (status_code=400,detail="user not use todo list please create first")
+        raise HTTPException (status_code=400,detail="error not found id")
 @app.post("/todo/create")# create method
 async def toodo_create(todo: todo,Authorize: AuthJWT = Depends(), db: SessionLocal = Depends(get_db)):
 
