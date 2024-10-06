@@ -264,7 +264,7 @@ async def del_todo(Authorize : AuthJWT = Depends()):
 
     try:    
         Authorize.jwt_required()
-        Authorize.jwt_required()
+    
         decoded_token = jwt.decode(access_token, 'secret', algorithms=["HS256"])
         email = decoded_token.get("sub")
         query1 = (f"Select id from users where email = '{email}'")
